@@ -1,23 +1,23 @@
 import requests
 
 def get_movie_data():
-    url = "https://bluecinema.ch/wp-json/wp/v2/movie?lang=en"
+    url = "https://bluecinema.ch/wp-json/wp/v2/movie?lang=en" #holt data vom url
     response = requests.get(url)
     
-    if response.status_code == 200:   #data fetch
-        movie_data = response.json()
+    if response.status_code == 200:   #Checks if the HTTP request was successful 
+        movie_data = response.json()  #data fetch
         return movie_data
     else:
-        print("Failed to fetch movie data. Status code:", response.status_code)
+        print("Failed to fetch movie data. Status code:", response.status_code) #falls unsuccesfull returns none
 -        return None
 
 def print_movie_info(movie_data):
     if movie_data:   #luegt obs null ish ---> is null or not
-        for movie in movie_data:
+        for movie in movie_data: #iteriert durch jeden film im data nimmt title, cover imgae, premiere data
             title = movie['title']['rendered']
             cover_image = movie['custom_fields']['poster']
 
-            # Checking if 'acf' is a dictionary or a list and then accessing 'premiereDate'
+            # checkt ob premiere data direkt accesible oder nested (lsite in einer liste) ist
             acf_data = movie['acf']
             if isinstance(acf_data, dict):
                 premiere_date = acf_data.get('premiereDate', "Not available")
